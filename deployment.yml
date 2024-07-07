@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: digitalex
+  labels:
+    app: digitalex
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: digitalex
+  template:
+    metadata:
+      labels:
+        app: digitalex
+    spec:
+      containers:
+        - name: digitalex
+          image: liliacr.azurecr.io/digitalex:v1.0.0
+          ports:
+            - containerPort: 3000
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: digitalex-service
+spec:
+  selector:
+    app: digitalex
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: LoadBalancer
